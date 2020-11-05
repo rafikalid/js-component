@@ -1,0 +1,29 @@
+{
+	"name": "js-component",
+	"version": "0.0.1",
+	"description": "lightweight & fast ui rendering framework",
+	"main": "build/index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/coredigix/core-ui.git"
+	},
+	"keywords": [
+		"css",
+		"reactor",
+		"gridfw"
+	],
+	"author": "Khalid rafik",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/rafikalid/js-component/issues"
+	},
+	"homepage": "https://github.com/rafikalid/js-component#readme",
+	"devDependencies": {
+		"gulp-gridfw": "^1.0.0",
+		"gulp": "^4.0.2"
+	},
+	"dependencies": {}
+}
