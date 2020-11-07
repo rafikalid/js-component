@@ -28,7 +28,7 @@ __dispatch: (eventName, event, eventPath, target, isSync, wrapper)->
 			# Run
 			wrappedEvent= new EventWrapper eventName, event, this, element, target, isSync
 			if wrapper
-				wrapper wrappedEvent, fx, actionArgs
+				wrapper wrappedEvent, actionArgs
 			else
 				fx.call this, wrappedEvent, actionArgs
 			# BREAK IF STOP_PROPAGATION IS CALLED

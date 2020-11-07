@@ -1,9 +1,9 @@
 ###* WRAP EVENT ###
 class EventWrapper
-	constructor: (eventName, event, currentComponent, currentTarget, target, isSync)->
+	constructor: (eventName, event, component, currentTarget, target, isSync)->
 		@o= @originalEvent= event
 		@type=				eventName
-		@currentComponent=	currentComponent
+		@component=			component
 		@currentTarget=		currentTarget
 		@target=			target
 		@isSync=			isSync
