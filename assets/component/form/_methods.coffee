@@ -74,7 +74,7 @@ vRest: (event)->
 	# empty file upload queue
 	for element in form.querySelectorAll 'input[type="file"]'
 		queue.length= 0 if queue= element[FILE_LIST_SYMB]
-		# TODO file-preview reset, fileBackgroung reset
+		@filePreviewReset element
 	return
 
 # Apply submit

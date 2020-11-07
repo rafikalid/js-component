@@ -2,7 +2,6 @@
  * File-upload
  * @example <div d-click="fileUpload {inputFileName}">
 ###
-# TODO: Extends this in "core-ui" to enable
 fileUpload: (event, args)->
 		try
 			throw "Missing parent form" unless form= event.currentTarget.closest 'form'
@@ -70,3 +69,7 @@ filePreview: (input, files)->
 	# else
 	# 	@filePreview input, input.files, fileLst, []
 	return
+
+###* Reset input file preview ###
+filePreviewReset: (input)->
+	# TODO: Implement this in core-ui

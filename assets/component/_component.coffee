@@ -1,6 +1,7 @@
 ###* Map components ###
 _components= new Map()			# mapping all components
 _componentPrivate= new Map()	# Map private attributes of each class
+ROOT_COMPONENT= null			# Store ROOT_COMPONENT
 
 #include component/_const.coffee
 #include component/_utils.coffee
@@ -13,6 +14,8 @@ class Component
 		super()
 		# Set element
 		@element= null
+		# Store events
+		@__events= new Map()
 		# Enable element
 		@setElement element
 		return
@@ -79,4 +82,6 @@ Component.HEX_REGEX=		HEX_REGEX
 # Convert string expression to bytes
 Component.toBytes= _toBytes
 
-# TODO: add ROOT_COMPONENT
+# ROOT COMPONENT
+ROOT_COMPONENT= new Component document
+Component.ROOT_COMPONENT= ROOT_COMPONENT
