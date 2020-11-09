@@ -10,7 +10,7 @@
 
 ###* @return component ###
 @getComponent: (element)->
-	element= document.querySelector element if typeof element is 'string'
+	element= @element.querySelector element if typeof element is 'string'
 	# get component
 	unless component= element[COMPONENT_SYMB]
 		if clazz= _components.get element.tagName

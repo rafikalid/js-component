@@ -25,7 +25,7 @@ inc: (event, args)->
 		step= +input.step
 		step= 1 if isNaN step
 		# REAL STEP
-		effectiveStep*= inc
+		effectiveStep= step * inc
 		# MIN VALUE
 		min= +input.min
 		min= -Infinity if isNaN min
@@ -44,7 +44,7 @@ inc: (event, args)->
 		else if value < min
 			value= if hasLoop then max - effectiveStep + 1 else min
 		# Decimals
-		if (decimals= input.getAttribute('d-decimals')) and (decimals= +decimals) and Number.isSafeInteger(decimals) and decimals > 0
+		if (decimals= input.getAttribute('v-decimals')) and (decimals= +decimals) and Number.isSafeInteger(decimals) and decimals > 0
 			value= value.toFixed decimals
 		# save
 		input.value= value

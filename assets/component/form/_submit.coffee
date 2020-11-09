@@ -21,7 +21,7 @@ GET:		(event, parts)->
 onFormUpload: (form, event)->
 	if event.lengthComputable and ($progress= form.querySelector '.progress')
 		$progress.classList.delete 'loading'
-		prcent= (event.loaded / event.total)>>0
+		prcent= (event.loaded * 100 / event.total)>>0
 		$progress.querySelector('.track')?.style.width= "#{prcent}%"
 		$progress.querySelector('.label')?.innerText "#{prcent}%"
 	return

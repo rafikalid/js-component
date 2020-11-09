@@ -4,20 +4,22 @@
 ###
 fileUpload: (event, args)->
 		try
-			throw "Missing parent form" unless form= event.currentTarget.closest 'form'
+			# Get input
+			currentTarget= event.currentTarget
+			if inputName= args[1]
+				throw "Missing parent form" unless parent= currentTarget.closest 'form'
+				throw "Missing input file: #{inputName}" unless (inpFile= parent[inputName]) and inpFile.type is 'file'
+			else
+				throw 'Missing parent with class="f-cntrl"' unless parent= currentTarget.closest '.f-cntrl'
+				throw "Missing input file" unless inpFile= parent.querySelector 'input[type=file]'
 			# Get input file
-			throw "Missing input file name" unless inputName= args[1]
-			throw "Missing input file: #{inputName}" unless (inpFile= form[inputName]) and inpFile.type is 'file'
 			# reset files
 			inpFile.value= ''
 			# set on change
 			inpFile.addEventListener 'change', @fileUploadChange.bind(this), {once: yes, passive: yes}
 			inpFile.click()
 		catch err
-			@emit 'form-error',
-				element:	this
-				form:		form
-				error:		err
+			@emit 'form-error', err
 		return
 ###* This method is called when files are selected ###
 fileUploadChange: (event)->

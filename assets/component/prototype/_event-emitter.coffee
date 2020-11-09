@@ -67,3 +67,10 @@ emit: (eventName, data)->
 	else if eventName in ['error', 'form-error']
 		Component.fatalError eventName, data
 	return this # chain
+
+# Emit event to all components inside the DOM
+@emit: (eventName, data)->
+	privateAttr= _componentPrivate.get(this)
+	for element in document.querySelectorAll privateAttr.tagName
+		@getComponent(element).emit eventName, data
+	this # chain
