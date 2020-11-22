@@ -19,14 +19,14 @@
 				# Check for component
 				if componentClass= _components.get element.tagName
 					component= element[COMPONENT_SYMB] or new componentClass(element)
-					component._dispatch eventName, event, eventPath, target, isSync, null
+					component.__dispatch eventName, event, eventPath, target, isSync, null
 					target= element
 					eventPath.length= 0
 				# next
 				eventPath.push element
-				element= element.parentNode
+				element= element.parentElement
 		# Run global component
-		ROOT_COMPONENT._dispatch eventName, event, eventPath, target, isSync, null
+		ROOT_COMPONENT.__dispatch eventName, event, eventPath, target, isSync, null
 		return
 	# Interface
 	(events, isSync)->

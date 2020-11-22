@@ -14,25 +14,6 @@ _closestComponent= (element)->
 		element= element.parentNode
 	return ROOT_COMPONENT
 
-###* Remove classes ###
-_removeClasses= (element)->
-	classList= element.classList
-	i= 1
-	len= arguments.length
-	while i < len
-		classList.delete arguments[i]
-		++i
-	return
-_removeElementsClasses= (elements)->
-	len= arguments.length
-	for element in elements
-		classList= element.classList
-		i= 1
-		while i < len
-			classList.delete arguments[i]
-			++i
-	return
-
 # Convert string to bytes
 _toBytes= do ->
 	units=

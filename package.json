@@ -8,7 +8,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/coredigix/core-ui.git"
+		"url": "git+https://github.com/rafikalid/js-component.git"
 	},
 	"keywords": [
 		"css",

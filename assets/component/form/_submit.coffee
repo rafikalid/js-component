@@ -20,10 +20,12 @@ GET:		(event, parts)->
 # Loading effect
 onFormUpload: (form, event)->
 	if event.lengthComputable and ($progress= form.querySelector '.progress')
-		$progress.classList.delete 'loading'
-		prcent= (event.loaded * 100 / event.total)>>0
-		$progress.querySelector('.track')?.style.width= "#{prcent}%"
-		$progress.querySelector('.label')?.innerText "#{prcent}%"
+		requestAnimationFrame ->
+			$progress.classList.remove 'loading'
+			prcent= (event.loaded * 100 / event.total)>>0
+			$progress.querySelector('.track')?.style.width= "#{prcent}%"
+			$progress.querySelector('.label')?.innerText "#{prcent}%"
+			return
 	return
 # When receiving response from server after sending form
 onFormResponse: (form, result)->

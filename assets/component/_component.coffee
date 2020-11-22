@@ -3,12 +3,12 @@ _components= new Map()			# mapping all components
 _componentPrivate= new Map()	# Map private attributes of each class
 ROOT_COMPONENT= null			# Store ROOT_COMPONENT
 
-#include component/_const.coffee
-#include component/_utils.coffee
-#include component/_event-wrapper.coffee
+#=include _const.coffee
+#=include _utils.coffee
+#=include _event-wrapper.coffee
 
 ###* Main class ###
-class Component
+class Component extends EventEmitter
 	# Constructror
 	constructor: (element)->
 		super()
@@ -49,6 +49,11 @@ class Component
 	#=include form/_submit.coffee
 	#=include basic-actions\_*.coffee
 
+	###* CORE-UI ADDITIONAL ELEMENTS ###
+	<% if(Core){ %>
+	#=include ../../../core-ui/assets/js/components/actions/_*.coffee
+	<% } %>
+
 # Alias
 Component::html= Component::setElement
 
@@ -58,8 +63,9 @@ _componentPrivate.set Component,
 	subClasses:		[Component]	# subclasses
 	watch:			{}			# {eventName: [selector, [args], ...]}
 	watchSync:		{}			# {eventName: [selector, [args], ...]}
-	linkEvents:		{}
-	customEvents:	{}
+	linkEvents:		{}			# {eventName: [customEvent1, ....]}
+	customEvents:	{}			# {customEvent: parentEvent}
+	eventWrapper:	{}			# {eventName: wrapper}
 
 #=include basic-events/_*.coffee
 

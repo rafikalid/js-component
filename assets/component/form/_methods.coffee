@@ -3,14 +3,16 @@ vFocus: (event)->
 	input= event.target
 	# Remove flags
 	if fCntrl= input.closest '.f-cntrl'
-		# Remove state classes
-		_removeClasses fCntrl, 'has-error', 'has-done', 'has-warn'
-		# Reset active input
-		for element in fCntrl.querySelectorAll('.active-input')
-			element.classList.delete 'active-input'
-		# Set current input as active
-		input.classList.add 'active-input'
-		fCntrl.classList.add 'has-active'
+		requestAnimationFrame ->
+			# Remove state classes
+			fCntrl.classList.remove 'has-error', 'has-done', 'has-warn'
+			# Reset active input
+			for element in fCntrl.querySelectorAll('.active-input')
+				element.classList.remove 'active-input'
+			# Set current input as active
+			input.classList.add 'active-input'
+			fCntrl.classList.add 'has-active'
+			return
 	# Auto-select
 	input.select() if input.hasAttribute 'd-select'
 	# Autocomplete
@@ -24,11 +26,14 @@ vFormControl: (input)->
 	input[INPUT_VALIDATED]= no
 	# Remove state classes
 	if fCntrl= input.closest '.f-cntrl'
-		_removeClasses fCntrl, 'has-error', 'has-done', 'has-warn', 'has-active'
 		fCntrlClass= fCntrl.classList
-		fCntrlClass.add 'loading'
+		requestAnimationFrame ->
+			fCntrlClass.remove 'has-error', 'has-done', 'has-warn', 'has-active'
+			fCntrlClass.add 'loading'
+			return
 	# Validate
 	state= false
+	addClass= null
 	try
 		value= input.value
 		# Check it's a valid html input
@@ -51,26 +56,32 @@ vFormControl: (input)->
 			# replace with new value
 			input.value= value if input.type isnt 'file'
 			# Has success
-			fCntrlClass?.add 'has-done' if input.value isnt input.defaultValue
+			addClass= 'has-done' if input.value isnt input.defaultValue
 			input[INPUT_VALIDATED]= yes
 			state= yes
 	catch err
-		fCntrlClass?.add if err is 'warn' then 'has-warn' else 'has-error'
+		addClass= if err is 'warn' then 'has-warn' else 'has-error'
 		@emit 'form-error', {element: input, error: err}
 	finally
-		fCntrlClass?.delete 'loading'
 		# trigger validation state
 		@emit 'validated',
 			element:	input
 			status:		state
+		if fCntrlClass
+			requestAnimationFrame ->
+				fCntrlClass.remove 'loading'
+				fCntrlClass.add addClass if addClass
+				return
 	return state
 
 # Apply reset
 vRest: (event)->
 	form= event.target
 	# remove state classes
-	elements= form.querySelectorAll('.has-error, .has-done, .has-warn')
-	_removeElementsClasses elements, 'has-error', 'has-done', 'has-warn'
+	requestAnimationFrame ->
+		for element in form.querySelectorAll('.has-error, .has-done, .has-warn')
+			element.classList.remove 'has-error', 'has-done', 'has-warn'
+		return
 	# empty file upload queue
 	for element in form.querySelectorAll 'input[type="file"]'
 		queue.length= 0 if queue= element[FILE_LIST_SYMB]
@@ -81,7 +92,11 @@ vRest: (event)->
 vSubmit: (event)->
 	# Prepare
 	form= event.target
-	form.classList.add 'loading'
+	requestAnimationFrame ->
+		fcl= form.classList
+		fcl.remove 'form-has-error'
+		fcl.add 'loading'
+		return
 	try
 		# Prevent sending
 		event.preventDefault()
@@ -114,12 +129,16 @@ vSubmit: (event)->
 			await cb.call this, event, parts
 		else
 			form.submit()
-	catch error
+	catch err
 		unless (err is no) or (err?.aborted) # err.aborted => ajax
-			$form.addClass 'form-has-error'
 			@emit 'form-error', err
+			requestAnimationFrame ->
+				form.classList.add 'form-has-error'
+				return
 	finally
-		form.classList.delete 'loading'
+		requestAnimationFrame ->
+			form.classList.remove 'loading'
+			return
 	return
 
 # Execute an animation for input when error

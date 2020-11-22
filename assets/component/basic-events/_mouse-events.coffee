@@ -33,5 +33,3 @@ Component
 			return
 		window.addEventListener 'mouseover', outListener, {capture: true, passive: true}
 	return
-
-# TODO: add move events

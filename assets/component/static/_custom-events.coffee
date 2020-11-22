@@ -26,9 +26,19 @@
 				throw "A subClass already mapped [#{customEvent}] to [#{srcEv}]"
 			# Add
 			privateAttr.customEvents[customEvent]= srcEvent
-			arr= privateAttr.linkEvents[srcEvent]?= []
-			arr.push customEvent, wrapper
-	catch error
+			privateAttr.eventWrapper[customEvent]= wrapper
+			if arr= privateAttr.linkEvents[srcEvent]
+				arr.push customEvent
+			else
+				privateAttr.linkEvents[srcEvent]= [customEvent]
+	catch err
 		err= new Error "::createEvent>> #{err}" if typeof err is 'string'
 		throw err
+	this # chain
+
+###* SET EVENT WRAPPER ###
+@setEventWrapper: (eventName, wrapper)->
+	privateAttr= _componentPrivate.get this
+	throw "Unregistred class" unless privateAttr
+	privateAttr.eventWrapper[eventName]= wrapper
 	this # chain

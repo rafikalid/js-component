@@ -7,16 +7,17 @@ dispatch: (event, target, isSync)->
 	currentElement= @element
 	while element and element isnt currentElement
 		eventPath.push element
-		element= element.parentNode
+		element= element.parentElement
 	# Run
-	@__dispatch eventName, event, eventPath, target, isSync, null
+	@__dispatch eventName, event, eventPath, target, isSync
 	this # chain
 
 # Apply dispatch
-__dispatch: (eventName, event, eventPath, target, isSync, wrapper)->
+__dispatch: (eventName, event, eventPath, target, isSync)->
 	# Get private attributes
-	privateAttr= _componentPrivate.get this
+	privateAttr= _componentPrivate.get @constructor
 	throw new Error "Unregistred class" unless privateAttr
+	wrapper= privateAttr.eventWrapper[eventName]
 	# GO THROUGH ELEMENT ATTRIBUTES
 	actionAttribute= if isSync then "d-#{eventName}-sync" else "d-#{eventName}"
 	for element in eventPath when actionArgs= element.getAttribute actionAttribute
@@ -33,10 +34,10 @@ __dispatch: (eventName, event, eventPath, target, isSync, wrapper)->
 				fx.call this, wrappedEvent, actionArgs
 			# BREAK IF STOP_PROPAGATION IS CALLED
 			break unless wrappedEvent.bubbles
-		catch error
-			@emit 'error', err
+		catch err
+			@emit 'error', err.stack or error
 	# Linked event actions
-	if cssWatchers= if isSync then privateAttr.watchSync[eventName] else privateAttr.watch[eventName]
+	if cssWatchers= (if isSync then privateAttr.watchSync[eventName] else privateAttr.watch[eventName])
 		len= cssWatchers.length
 		for element in eventPath
 			i= 0
@@ -58,11 +59,8 @@ __dispatch: (eventName, event, eventPath, target, isSync, wrapper)->
 			break unless wrappedEvent.bubbles
 	# Execute linked events
 	if linkEvents= privateAttr.linkEvents[eventName]
-		i= 0
-		len= linkEvents.length
-		while i < len
-			eventName= linkEvents[i++]
-			wrapper= linkEvents[i++]
-			@__dispatch eventName, event, eventPath, target, isSync, wrapper
+		for customEvnt in linkEvents
+			@__dispatch customEvnt, event, eventPath, target, isSync
 	return
+
 ###* Load action attributes and wrappers ###

@@ -56,7 +56,7 @@
 			until cl is Component
 				cl= cl.__proto__
 				_componentPrivate.get(cl).subClasses.push clazz
-		catch error
-			error= new Error "DEFINE COMPONENT>> #{error}" if typeof error is 'string'
-			throw error
+		catch err
+			err= new Error "DEFINE COMPONENT>> #{err}" if typeof err is 'string'
+			throw err
 		this # chain

@@ -15,6 +15,7 @@ class EventWrapper
 		@ctrlKey= event.ctrlKey
 		@x= event.x or event.clientX
 		@y= event.y or event.clientY
+		@timeStamp= event.timeStamp
 		return
 	stopPropagation: ->
 		@bubbles= off

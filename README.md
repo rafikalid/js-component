@@ -647,13 +647,13 @@ for(var i=0, len= elements.length; i<len; i++){
 ```
 
 ## Predefined events
-**error** : Triggered when a error happens
-**form-error** : Triggered when form error
+- **error** : Triggered when a error happens
+- **form-error** : Triggered when form error
 
 # CONST
-`Component.EMAIL_REGEX`:	Email check Regular expression
-`Component.TEL_REGEX`:	Tel check Regular expression
-`Component.HEX_REGEX`:	Hex check Regular expression
+- `Component.EMAIL_REGEX`:	Email check Regular expression
+- `Component.TEL_REGEX`:	Tel check Regular expression
+- `Component.HEX_REGEX`:	Hex check Regular expression
 
 # Utilities
 

@@ -10,7 +10,7 @@
 					isChecked= yes
 					break
 				throw false unless isChecked
-		default
+		else
 			throw false unless value
 	return value
 'v-step': (value, step, input)->

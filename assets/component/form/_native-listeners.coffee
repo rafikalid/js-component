@@ -27,7 +27,7 @@ _blurListener= (event)->
 	element= event.target
 	if element is window
 		_triggerWinEvents 'window-blur', event
-	else if element.form
+	else if element.form or element.formAction
 		_closestComponent(element).vFormControl element
 	else
 		console.warn '-- Insupported blur event detected!'
