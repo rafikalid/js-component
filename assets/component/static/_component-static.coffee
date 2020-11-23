@@ -10,7 +10,7 @@
 
 ###* @return component ###
 @getComponent: (element)->
-	element= @element.querySelector element if typeof element is 'string'
+	element= document.querySelector element if typeof element is 'string'
 	# get component
 	unless component= element[COMPONENT_SYMB]
 		if clazz= _components.get element.tagName
@@ -50,9 +50,10 @@
 				watchSync:		_copyPrivate(parentAttr.watchSync)	# {eventName: [selector, [args], ...]}
 				linkEvents:		_copyPrivate(parentAttr.linkEvents)	# {nativeEvent: ['customEvent', wrapper, ...]}
 				customEvents:	_assign {}, parentAttr.customEvents	# {hover: 'mouseover'}
+				eventWrapper:	_assign {}, parentAttr.eventWrapper	# {eventName: wrapper}
 			_componentPrivate.set clazz, privateAttr
 			# Add to supper classes
-			prevArr= []
+			cl= clazz
 			until cl is Component
 				cl= cl.__proto__
 				_componentPrivate.get(cl).subClasses.push clazz
@@ -60,3 +61,9 @@
 			err= new Error "DEFINE COMPONENT>> #{err}" if typeof err is 'string'
 			throw err
 		this # chain
+
+###* Define new component and set it to be initialized when page laod ###
+@defineInit: (tagName, clazz)->
+	@define tagName, clazz
+	_initComponentsOnLoad.add tagName.toUpperCase()
+	this # chain

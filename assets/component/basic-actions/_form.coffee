@@ -6,7 +6,7 @@
 ###
 submit: (event, args)->
 	# Get form
-	if form= (if args.length > 1 then @element.querySelector(args.slice(1).join(' ')) else event.currentTarget.closest 'form')
+	if form= (if args.length > 1 then @__element.querySelector(args.slice(1).join(' ')) else event.currentTarget.closest 'form')
 		@vSubmit
 			target: form
 			preventDefault: ->

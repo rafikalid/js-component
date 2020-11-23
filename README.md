@@ -75,6 +75,9 @@ Component.define('component-tag-name', class MyComponentClass extends Component 
 ```
 To prevent confusion with future HTML tags, your tagName should contain at least one "-"
 
+## Define component that needs to be initialized
+If the content of your component needs to be initialized (ie: set innerHTML), use `Component.defineInit` instead of `Component.define`
+
 ## Get Component class
 ```javascript
 var MyComponentClass= Component.get('component-tag-name');

@@ -4,7 +4,7 @@ dispatch: (event, target, isSync)->
 	# Generate event path
 	eventPath= []
 	element= target
-	currentElement= @element
+	currentElement= @__element
 	while element and element isnt currentElement
 		eventPath.push element
 		element= element.parentElement
@@ -29,13 +29,13 @@ __dispatch: (eventName, event, eventPath, target, isSync)->
 			# Run
 			wrappedEvent= new EventWrapper eventName, event, this, element, target, isSync
 			if wrapper
-				wrapper wrappedEvent, actionArgs
+				wrapper wrappedEvent, fx, actionArgs
 			else
 				fx.call this, wrappedEvent, actionArgs
 			# BREAK IF STOP_PROPAGATION IS CALLED
 			break unless wrappedEvent.bubbles
 		catch err
-			@emit 'error', err.stack or error
+			@emit 'error', err.stack or err
 	# Linked event actions
 	if cssWatchers= (if isSync then privateAttr.watchSync[eventName] else privateAttr.watch[eventName])
 		len= cssWatchers.length

@@ -1,6 +1,7 @@
 ###* Map components ###
 _components= new Map()			# mapping all components
 _componentPrivate= new Map()	# Map private attributes of each class
+_initComponentsOnLoad= new Set()	# store tags of components to init
 ROOT_COMPONENT= null			# Store ROOT_COMPONENT
 
 #=include _const.coffee
@@ -13,7 +14,7 @@ class Component extends EventEmitter
 	constructor: (element)->
 		super()
 		# Set element
-		@element= null
+		@__element= null
 		# Store events
 		@__events= new Map()
 		# Enable element
@@ -28,9 +29,9 @@ class Component extends EventEmitter
 			throw new Error "Component::setElement>> The html must contain exactly one element!" if DIV_RENDER.childElementCount isnt 1
 			element= DIV_RENDER.firstElementChild
 		# Set new Element
-		previousElement= @element
+		previousElement= @__element
 		if newElement isnt previousElement
-			@element= newElement
+			@__element= newElement
 			newElement[COMPONENT_SYMB]= this
 			unless newElement is document
 				# newElement.classList.add COMPONENT_CLASS_NAME
@@ -38,6 +39,10 @@ class Component extends EventEmitter
 					parent.insertBefore newElement, previousElement
 					parent.removeChild previousElement
 		this # chain
+
+	```
+	get element(){ return this.__element }
+	```
 
 	###* METHODS ###
 	#=include static/_*.coffee

@@ -111,7 +111,7 @@ do ->
 	window.addEventListener 'touchend', _moveTouchEnd, _moveAddEventListenerOptions
 
 	_moveListenerCaller= (event, listener, args)->
-		customEvent= new _moveEventWrapper event.originalEvent, _moveData
+		customEvent= new _moveEventWrapper event, _moveData
 		listener.call event.component, customEvent, args
 		return
 
@@ -119,4 +119,5 @@ do ->
 	Component.setEventWrapper 'move', _moveListenerCaller
 	Component.setEventWrapper 'movestart', _moveListenerCaller
 	Component.setEventWrapper 'moveend', _moveListenerCaller
+	Component.enableAction 'move', 'movestart', 'moveend'
 	return
