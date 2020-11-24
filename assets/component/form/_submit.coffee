@@ -9,11 +9,12 @@ GET:		(event, parts)->
 	throw new Error "Core-ui is required" unless Core?.defaultRouter?
 	form= event.target
 	url= new URL form.action, document.location.href
-	url.search= ''
-	params= url.searchParams
-	(new FormData form).forEach (v,k)->
-		params.append k, v if typeof v is 'string'
-		return
+	url.search= @toFormUrlEncoded form
+	# params= url.searchParams
+	#
+	# (new FormData form).forEach (v,k)->
+	# 	params.append k, v if typeof v is 'string'
+	# 	return
 	Core.defaultRouter.goto url
 	return
 

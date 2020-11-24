@@ -2,8 +2,7 @@
 toFormData: (form)->
 	data= new FormData()
 	for input in form.elements
-		continue if input.disabled
-		continue unless inputName= input.name
+		continue if input.disabled or not(inputName= input.name)
 		# Input components
 		if c= input[INPUT_COMPONENT_SYMB]
 			values= c.value
@@ -53,3 +52,25 @@ toFormObj:	(form)->
 		else
 			data[inputName]= input.value
 	return data
+toFormUrlEncoded: (form)->
+	data= new URLSearchParams()
+	for input in form.elements
+		continue if input.disabled or not(inputName= input.name)
+		# Input components
+		if c= input[INPUT_COMPONENT_SYMB]
+			values= c.value
+			if _isArray values
+				data.append inputName, v for v in values
+			else
+				data.append inputName, values
+		# normal input file
+		else if input.type is 'file'
+			values= input[FILE_LIST_SYMB] or input.files
+			for file in values
+				data.append inputName, file, file.name
+		# Checkbox & radio
+		else if input.type in ['radio', 'checkbox']
+			data.append inputName, input.value if input.checked
+		else
+			data.append inputName, input.value
+	return data.toString()
