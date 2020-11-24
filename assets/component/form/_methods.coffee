@@ -62,6 +62,7 @@ vFormControl: (input)->
 	catch err
 		addClass= if err is 'warn' then 'has-warn' else 'has-error'
 		@emit 'form-error', {element: input, error: err}
+		@animateInputError input
 	finally
 		# trigger validation state
 		@emit 'validated',
@@ -113,7 +114,10 @@ vSubmit: (event)->
 		jobs= await Promise.all jobs
 		for v,i in jobs when v is no
 			# do animation
-			@animateInputError formElements[i]
+			input= formElements[i]
+			input.focus()
+			input.select()
+			@animateInputError input
 			throw no
 		# Callbacks before submit on elements
 		for element in formElements when not element.disabled and (attr= element.getAttribute 'v-submit')
@@ -143,8 +147,11 @@ vSubmit: (event)->
 
 # Execute an animation for input when error
 animateInputError: (input)->
-	# TODO: add an animation & beep in Core-ui
-	# Select
-	input.focus()
-	input.select()
+	input.animate({
+		color: ['transparent', 'inherit']
+	},{
+		easing:		'steps(2, start)'
+		duration:	1000
+		iterations:	3
+	})
 	return

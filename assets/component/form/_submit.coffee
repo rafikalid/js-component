@@ -50,7 +50,10 @@ __sendFormData: (type, event, parts)->
 	ajaxApi= Core.ajax
 	form= event.target
 	# Create form data
-	formData= @toFormData form
+	if type is 'json'
+		formData= @toFormJSON form
+	else
+		formData= @toFormData form
 	# Send ajax
 	result= await ajaxApi.post
 		data:	formData

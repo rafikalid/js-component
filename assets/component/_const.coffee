@@ -2,6 +2,7 @@
 COMPONENT_SYMB= Symbol 'Component'
 FILE_LIST_SYMB= Symbol 'File list' # list of selected files in the input text, used with ajax
 INPUT_VALIDATED= Symbol 'Field validated'
+INPUT_COMPONENT_SYMB= Symbol 'Input Component' # replace value from input with one from relative component
 
 
 # COMPONENT_CLASS_NAME= '_core-component'
