@@ -7,7 +7,7 @@
 # 	catch error
 # 		error= "::on>> #{error}" if typeof error is 'string'
 # 		throw error
-# 
+#
 # once: (eventName, listener)->
 # 	try
 # 		throw 'Expected 2 args' unless arguments.length is 2
@@ -64,7 +64,7 @@
 # 					i+= 2
 # 			catch error
 # 				Component.fatalError 'Listener error', error
-# 	else if eventName in ['error', 'form-error']
+# 	else if eventName in ['error']
 # 		Component.fatalError eventName, data
 # 	return this # chain
 

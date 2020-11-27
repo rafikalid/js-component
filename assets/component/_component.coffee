@@ -13,8 +13,13 @@ class Component extends EventEmitter
 	# Constructror
 	constructor: (element)->
 		super()
+		# Element
+		unless element
+			element= document.createElement _components.get(this).tagName
 		# Set element
 		@__element= null
+		@__domElement= null # Real element in the DOM, used because we manipulate dom when new frame
+		@__domRaf= null # requestAnimationFrame
 		# Store events
 		@__events= new Map()
 		# Enable element
@@ -29,15 +34,19 @@ class Component extends EventEmitter
 			throw new Error "Component::setElement>> The html must contain exactly one element!" if DIV_RENDER.childElementCount isnt 1
 			element= DIV_RENDER.firstElementChild
 		# Set new Element
-		previousElement= @__element
-		if newElement isnt previousElement
+		if newElement isnt @__element
 			@__element= newElement
 			newElement[COMPONENT_SYMB]= this
 			unless newElement is document
 				# newElement.classList.add COMPONENT_CLASS_NAME
+				previousElement= @__domElement
 				if previousElement and (parent= previousElement.parentNode)
-					parent.insertBefore newElement, previousElement
-					parent.removeChild previousElement
+					cancelAnimationFrame @__domRaf if @__domRaf
+					@__domRaf= requestAnimationFrame (t)->
+						@__domElement= newElement
+						parent.insertBefore newElement, previousElement
+						parent.removeChild previousElement
+						return
 		this # chain
 
 	```
@@ -78,7 +87,7 @@ _componentPrivate.set Component,
 #=include form/_native-listeners.coffee
 
 # PRE-ENABLED ACTIONS
-Component.enableAction 'click'
+Component.enableAction 'click', 'focus'
 
 # Interface
 Component.EventWrapper= EventWrapper

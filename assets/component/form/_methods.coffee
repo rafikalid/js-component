@@ -61,7 +61,7 @@ vFormControl: (input)->
 			state= yes
 	catch err
 		addClass= if err is 'warn' then 'has-warn' else 'has-error'
-		@emit 'form-error', {element: input, error: err}
+		@emit 'error', {element: input, error: err}
 		@animateInputError input
 	finally
 		# trigger validation state
@@ -135,7 +135,7 @@ vSubmit: (event)->
 			form.submit()
 	catch err
 		unless (err is no) or (err?.aborted) # err.aborted => ajax
-			@emit 'form-error', err
+			@emit 'error', err
 			requestAnimationFrame ->
 				form.classList.add 'form-has-error'
 				return

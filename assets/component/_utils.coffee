@@ -9,7 +9,7 @@ _closestComponent= (element)->
 	return ROOT_COMPONENT if element in [document, window]
 	# Check for closest component
 	while element
-		if clazz= _components[element.tagName]
+		if clazz= _components.get element.tagName
 			return element[COMPONENT_SYMB] or new clazz element
 		element= element.parentNode
 	return ROOT_COMPONENT
