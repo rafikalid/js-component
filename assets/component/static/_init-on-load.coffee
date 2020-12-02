@@ -2,7 +2,13 @@
 @__initComponents: (container)->
 	_initComponentsOnLoad.forEach (tagName)->
 		if clazz= _components.get tagName
-			for element in container.getElementsByTagName tagName
+			try
+				# Faster but not work on document fragments
+				tagElements= container.getElementsByTagName tagName
+			catch error
+				# If it's a document fragment
+				tagElements= container.querySelectorAll tagName
+			for element in tagElements
 				try
 					new clazz element
 				catch err

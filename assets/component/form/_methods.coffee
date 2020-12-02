@@ -16,9 +16,8 @@ vFocus: (event)->
 	# Auto-select
 	input.select() if input.hasAttribute 'd-select'
 	# Autocomplete
-	# TODO: autocomplete
-	# if args= element.getAttribute 'd-autocomplete'
-	# 	_closestComponent(element).autocomplete element, args
+	if input.hasAttribute 'd-autocomplete'
+		@autocomplete event, [null, input.getAttribute 'd-autocomplete']
 	return
 
 ###* Validate form control ###
@@ -60,8 +59,12 @@ vFormControl: (input)->
 			input[INPUT_VALIDATED]= yes
 			state= yes
 	catch err
-		addClass= if err is 'warn' then 'has-warn' else 'has-error'
-		@emit 'error', {element: input, error: err}
+		if err is 'warn'
+			addClass= 'has-warn'
+		else
+			addClass= 'has-error'
+			if err isnt false
+				@emit 'error', {element: input, error: err}
 		@animateInputError input
 	finally
 		# trigger validation state

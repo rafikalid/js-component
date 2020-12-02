@@ -89,25 +89,27 @@
 
 # Check input type if equals to one of the following
 'v-type': (value, param, element)->
+	data= value.trim()
 	for type in param.trim().toLowerCase().split /[\s,]+/
-		try
-			switch type
-				when 'empty'
-					res= !value
-				when 'email'
-					res= EMAIL_REGEX.test data
-				when 'tel'
-					res= TEL_REGEX.test data
-				when 'number'
-					res= data and not isNaN(+data)
-				when 'hex'
-					res= HEX_REGEX.test data
-				when 'url'
+		switch type
+			when 'empty'
+				res= !data
+			when 'email'
+				res= EMAIL_REGEX.test data
+			when 'tel'
+				res= TEL_REGEX.test data
+			when 'number'
+				res= not isNaN(data)
+			when 'hex'
+				res= HEX_REGEX.test data
+			when 'url'
+				try
 					new URL data
 					res= yes
-			return value if res
-		catch error
-			res= no
+				catch error
+					res= no
+		if res
+			return value
 	throw no
 
 # Ignore executing attribute "v-submit". @see vSubmit
