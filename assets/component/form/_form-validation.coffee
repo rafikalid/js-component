@@ -82,7 +82,7 @@
 'v-each-min-bytes': <% _validatorEachBytes('f.size <= bytes') %>
 
 # Check input equals to value of an other input: @example: check password confirmation
-'v-equals': (value, param, element)->
+'v-equals': (value, param, input)->
 	param= param.trim()
 	throw no unless value is input.form[param].value
 	return value
@@ -99,7 +99,7 @@
 			when 'tel'
 				res= TEL_REGEX.test data
 			when 'number'
-				res= not isNaN(data)
+				res= not(data is '' or isNaN data)
 			when 'hex'
 				res= HEX_REGEX.test data
 			when 'url'

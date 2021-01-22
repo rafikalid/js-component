@@ -39,18 +39,35 @@ toFormObj:	(form)->
 	data= {}
 	excludeNamesRegex= /^__.+__$/
 	for input in form.elements
-		continue if input.disabled or not (inputName= input.name) or excludeNamesRegex.test inputName
+		continue if input.disabled or input.readOnly or not (inputName= input.name) or excludeNamesRegex.test inputName
 		# Input components
 		if c= input[INPUT_COMPONENT_SYMB]
-			data[inputName]= c.value
+			value= c.value
 		# normal input file
 		else if input.type is 'file'
-			data[inputName]= input[FILE_LIST_SYMB] or input.files
+			value= input[FILE_LIST_SYMB] or input.files
 		# Checkbox & radio
 		else if input.type in ['radio', 'checkbox']
-			data[inputName]= input.value if input.checked
+			continue unless input.checked
+			value= input.value
 		else
-			data[inputName]= input.value
+			value= input.value
+		# Add to object
+		dataT= data
+		parts= inputName.split '.'
+		lastEl= parts.length - 1
+		i= 0
+		while i < lastEl
+			k= parts[i++]
+			dataT= dataT[k]?= {}
+		k= parts[lastEl]
+		if v= dataT[k]
+			if _isArray(v)
+				v.push value
+			else
+				dataT[k]= [v, value]
+		else
+			dataT[k]= value
 	return data
 toFormUrlEncoded: (form)->
 	data= new URLSearchParams()

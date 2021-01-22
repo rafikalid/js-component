@@ -30,11 +30,19 @@ onFormUpload: (form, event)->
 	return
 # When receiving response from server after sending form
 onFormResponse: (form, result)->
-	result= result.json() # convert to JSON
+	try
+		result= result.json() # convert to JSON
+	catch err
+		result= {error: err}
+	if typeof result is 'string'
+		result= error: result
 	# Show simple message: result.message= 'Simple message'
 	# Show message with state: result.message= {text: 'Simple message', state: 'danger'}
 	# Show message with HTML: result.message= {html: '<b>Simple</b>', state:'warn'}
 	await Core.alert arg if arg= result.alert
+	if arg= result.error
+		arg= arg.message unless typeof arg is 'string'
+		await Core.alert {text: arg, state: 'danger'}
 
 	# Execute method
 	if (arg= result.do) and (fx= @[arg]) and typeof fx is 'function'
@@ -42,12 +50,13 @@ onFormResponse: (form, result)->
 	# redirect
 	else if arg= result.goto
 		return Core.goto arg
+	else if(arg= result.replace) and (r= Core.defaultRouter)
+		return r.replace arg
 	else if arg= result.redirect
-		document.location= arg
+		return Core.goOut arg
 	return
 # Send data using ajax
 __sendFormData: (type, event, parts)->
-	throw new Error "Core.ajax required" unless Core?.ajax?
 	ajaxApi= Core.ajax
 	form= event.target
 	# Create form data

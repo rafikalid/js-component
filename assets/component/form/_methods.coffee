@@ -3,9 +3,9 @@ vFocus: (event)->
 	input= event.target
 	# Remove flags
 	if fCntrl= input.closest '.f-cntrl'
-		requestAnimationFrame ->
+		requestAnimationFrame =>
 			# Remove state classes
-			fCntrl.classList.remove 'has-error', 'has-done', 'has-warn'
+			# fCntrl.classList.remove 'has-error', 'has-done', 'has-warn'
 			# Reset active input
 			for element in fCntrl.querySelectorAll('.active-input')
 				element.classList.remove 'active-input'
@@ -53,7 +53,8 @@ vFormControl: (input)->
 			if input.hasAttribute 'max'
 				value= await @['v-max'] value, input.getAttribute('max'), input
 			# replace with new value
-			input.value= value if input.type isnt 'file'
+			if input.type isnt 'file'
+				input.value= value
 			# Has success
 			addClass= 'has-done' if input.value isnt input.defaultValue
 			input[INPUT_VALIDATED]= yes
@@ -75,6 +76,8 @@ vFormControl: (input)->
 			requestAnimationFrame ->
 				fCntrlClass.remove 'loading'
 				fCntrlClass.add addClass if addClass
+				unless state
+					fCntrl.scrollIntoViewIfNeeded()
 				return
 	return state
 
