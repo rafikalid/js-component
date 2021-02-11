@@ -16,7 +16,7 @@
 		if clazz= _components.get element.tagName
 			component= new clazz element
 		else
-			throw new Error "Unknown component: #{element.tagName}"
+			component= null
 	return component
 
 ###* Define new component ###
