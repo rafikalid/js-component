@@ -116,7 +116,7 @@ vSubmit: (event)->
 			else if (state= element[INPUT_VALIDATED])?
 				jobs.push state
 			else
-				jobs.push @vFormControl element
+				jobs.push _closestComponent(element).vFormControl element
 		jobs= await Promise.all jobs
 		for v,i in jobs when v is no
 			# do animation
