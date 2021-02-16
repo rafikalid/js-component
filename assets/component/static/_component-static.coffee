@@ -4,6 +4,7 @@
 
 ###* @return component class ###
 @get: (componentName)->
+	componentName= componentName.toUpperCase()
 	clazz= _components.get componentName
 	throw new Error "Unknown component: #{componentName}" unless clazz
 	return clazz
